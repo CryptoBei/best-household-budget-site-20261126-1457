@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Hearthledger — a household budget site: dashboard, budget planner, ledger, savings goals, bills and insights, all from static files with no network.">
+<title>Hearthledger · Household Budget</title>
+<link rel="stylesheet" href="style.css">
+<script type="module" src="main.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="#/">
+    <span class="brand-mark" aria-hidden="true">H</span>
+    <span class="brand-text">Hearthledger<span class="brand-sub">Household budget</span></span>
+  </a>
+  <nav class="site-nav" aria-label="Pages">
+    <a href="#/" data-nav="/">Dashboard</a>
+    <a href="#/budget" data-nav="/budget">Budget</a>
+    <a href="#/ledger" data-nav="/ledger">Ledger</a>
+    <a href="#/goals" data-nav="/goals">Goals</a>
+    <a href="#/bills" data-nav="/bills">Bills</a>
+    <a href="#/insights" data-nav="/insights">Insights</a>
+  </nav>
+</header>
+<main id="app" class="site-main"></main>
+<footer class="site-footer">
+  <p>Hearthledger keeps one household's November 2026 budget: income, spending by category, savings goals and bills. Everything runs from these static files — no account, no network, works on a phone.</p>
+  <p><a href="#/">Dashboard</a> · <a href="#/budget">Budget planner</a> · <a href="#/ledger">Ledger</a> · <a href="#/goals">Savings goals</a> · <a href="#/bills">Bills</a> · <a href="#/insights">Insights</a></p>
+</footer>
+</body>
+</html>
