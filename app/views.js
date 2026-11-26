@@ -171,7 +171,7 @@ export function dashboardPage() {
 <div class="two-col">
   <section class="card">
     <h2>Recent activity</h2>
-    <table class="tx-table"><tbody>${recent}</tbody></table>
+    <table class="tx-table"><tbody>${recent || '<tr><td>No transactions yet this month — add the first one on the <a href="#/ledger">Ledger page</a>.</td></tr>'}</tbody></table>
     <p><a href="#/ledger">All ${state.transactions.length} transactions</a></p>
   </section>
   <section class="card">
@@ -242,7 +242,7 @@ ${addTransactionForm()}
   </form>
   <table class="tx-table">
     <thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th></th></tr></thead>
-    <tbody>${body || '<tr><td colspan="5">No transactions match those filters.</td></tr>'}</tbody>
+    <tbody>${body || '<tr><td colspan="5">No transactions match those filters. Try a shorter search, or <a href="#/ledger">clear the filters</a> to see the whole month.</td></tr>'}</tbody>
   </table>
   <p class="ledger-totals">Showing ${rows.length} of ${state.transactions.length} · in <strong class="amount-in">${money(inTotal)}</strong> · out <strong class="amount-out">${money(outTotal)}</strong> · net <strong>${money(inTotal - outTotal)}</strong></p>
 </section>`;
@@ -320,6 +320,10 @@ export function insightsPage(whatIfInput) {
   const result = whatIf(whatIfInput.category, whatIfInput.trim, whatIfInput.extra);
   const dining = rows.find((r) => r.name === 'Dining Out');
   const groceries = rows.find((r) => r.name === 'Groceries');
+  const remainingBudget = totalPlanned() - totalSpending();
+  const daysLeft = daysLeftInMonth();
+  const safeDailyAllowance = daysLeft > 0 ? remainingBudget / daysLeft : 0;
+  const projectedGap = totalPlanned() - projectedMonthEndSpending();
   return `<section class="page-head">
   <div><h1>Insights</h1>
   <p class="lede">Six months of the household's money, and what November's own numbers suggest.</p></div>
@@ -342,6 +346,7 @@ export function insightsPage(whatIfInput) {
       <li>Dining out is ${money(dining.spent)} so far (${dining.usedPercent}% of budget) — the calmest “want” this month, while shopping is at ${rows.find((r) => r.name === 'Shopping').usedPercent}%.</li>
       <li>Subscriptions cost ${money(subscriptionTotal())} a month, ${moneyWhole(subscriptionTotal() * 12)} a year — small, but the easiest line to trim.</li>
       <li>Average daily spending is ${money(averageDailySpending())}; holding that pace ends November near ${moneyWhole(projectedMonthEndSpending())}, under the ${moneyWhole(totalPlanned())} plan.</li>
+      <li>${remainingBudget >= 0 ? `${money(remainingBudget)} of the plan remains for the last ${daysLeft} ${daysLeft === 1 ? 'day' : 'days'} — about ${money(safeDailyAllowance)} a day keeps spending inside the plan, and the current pace projects ${moneyWhole(Math.abs(projectedGap))} ${projectedGap >= 0 ? 'under' : 'over'} plan at month end.` : `Spending is already ${money(Math.abs(remainingBudget))} past the plan with ${daysLeft} ${daysLeft === 1 ? 'day' : 'days'} left, so any further spending widens the gap.`}</li>
     </ul>
   </section>
 </div>
